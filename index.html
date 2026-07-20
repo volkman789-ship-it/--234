@@ -134,9 +134,10 @@
         .error-overlay p { color: #ffe3e8; font-size: 1.15rem; font-weight: 500; line-height: 1.5; margin-bottom: 25px; }
         
         .forgive-btn {
-            background: white; color: #ff3b5c; border: none; padding: 14px 28px;
-            border-radius: 30px; font-weight: bold; font-size: 1.05rem; cursor: pointer;
+            background: white; color: #ff3b5c; border: none; padding: 14px 24px;
+            border-radius: 30px; font-weight: bold; font-size: 1rem; cursor: pointer;
             box-shadow: 0 8px 25px rgba(0,0,0,0.25); transition: transform 0.2s;
+            line-height: 1.4;
         }
         .forgive-btn:hover { transform: scale(1.06); }
 
@@ -214,7 +215,8 @@
         </div>
         <h1>รหัสผิดนะอ้วน!</h1>
         <p>จำวันครบรอบเราไม่ได้หรอ<br>อย่างงี้ต้องโดนอะไรน้าาาาา 😜</p>
-        <button class="forgive-btn" onclick="closeErrorOverlay()">ขอโทษน้า กดตรงนี้แล้วลองใหม่! 🥺❤️</button>
+        <!-- แก้ไขข้อความปุ่มตรงนี้แล้ว -->
+        <button class="forgive-btn" onclick="closeErrorOverlay()">กดตรงนี้ซะไม่งั้นโดนเยดแน่นอน 🔥😈</button>
     </div>
 
     <!-- Pop-up Notification Banner -->
@@ -384,7 +386,6 @@
     const TARGET_PASSCODE = "030825"; 
     let currentInput = "";
 
-    // 🔄 ระบบโหลดภาพอัจฉริยะ: ค้นหาไฟล์ .heic / .HEIC / .jpg / .JPG อัตโนมัติ
     function handleSmartImageLoad(img) {
         const originalSrc = img.getAttribute('src');
         if(!originalSrc) return;
@@ -392,7 +393,6 @@
         const baseName = originalSrc.substring(0, originalSrc.lastIndexOf('.'));
         const ext = originalSrc.substring(originalSrc.lastIndexOf('.')).toLowerCase();
 
-        // ขั้นที่ 1: ถ้าเป็น HEIC ให้พยายามแปลงไฟล์โดยใช้ heic2any
         if (ext === '.heic') {
             fetch(originalSrc)
                 .then(res => {
@@ -405,7 +405,6 @@
                     img.src = url;
                 })
                 .catch(() => {
-                    // ถ้า HEIC แปลงไม่สำเร็จ หรือไม่มีไฟล์ ให้ลองดึงไฟล์ .HEIC (ตัวพิมพ์ใหญ่), .jpg, .JPG มาใช้
                     tryFallbackExtensions(img, baseName);
                 });
         } else {
@@ -425,7 +424,6 @@
                 tempImg.onerror = loadNext;
                 tempImg.src = nextSrc;
             } else {
-                // ถ้าค้นหาทุกนามสกุลแล้วไม่เจอรูปเลย
                 if(img.id === 'error-photo') {
                     const parent = img.parentElement;
                     parent.style.display = 'none';
@@ -442,14 +440,12 @@
         loadNext();
     }
 
-    // เริ่มทำงานระบบโหลดภาพเมื่อหน้าเว็บพร้อม
     document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll('.smart-img').forEach(img => {
             handleSmartImageLoad(img);
         });
     });
 
-    // 💖 Heart Cursor Trail Effect
     window.addEventListener('mousemove', function(e) { createHeart(e.clientX, e.clientY); });
     window.addEventListener('touchmove', function(e) { 
         if(e.touches.length > 0) createHeart(e.touches[0].clientX, e.touches[0].clientY); 
@@ -624,7 +620,6 @@
     }
     loadQuestion();
 
-    // Passcode Logic
     function updatePassDisplay() {
         let display = currentInput.padEnd(6, '_');
         document.getElementById('passDisplay').innerText = display.split('').join(' ');
