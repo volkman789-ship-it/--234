@@ -6,6 +6,8 @@
     <title>Special Mission for You ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&family=Mitr:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- เพิ่ม Library สำหรับแปลงไฟล์ HEIC บนเว็บอัตโนมัติ -->
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
         body {
@@ -54,7 +56,7 @@
             width: 100%; max-width: 220px; height: 180px; border-radius: 20px; border: 3px solid #ff70a6;
             margin: 12px auto; overflow: hidden; display: flex; align-items: center; justify-content: center;
             background: #ffe3e8; color: #ff477e; font-weight: bold; box-shadow: 0 8px 20px rgba(255, 71, 126, 0.25);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease; position: relative;
         }
         .page-photo:hover { transform: scale(1.03) rotate(1deg); }
         .page-photo img { width: 100%; height: 100%; object-fit: cover; }
@@ -119,7 +121,6 @@
             animation: bounceIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
-        /* สไตล์สำหรับรูปภาพหน้าโกรธตอนรหัสผิด */
         .error-photo-box {
             width: 180px; height: 180px; border-radius: 20px; border: 4px solid white;
             margin: 10px auto 15px auto; overflow: hidden; display: flex; align-items: center; justify-content: center;
@@ -206,15 +207,17 @@
 
     <canvas id="bgCanvas"></canvas>
 
+    <!-- Fullscreen Error Popup -->
     <div id="fullErrorOverlay" class="error-overlay">
         <div class="error-photo-box">
-            <img id="error-photo" src="error-pic.jpg" alt="รูปตอนรหัสผิด">
+            <img class="smart-img" src="error-pic.heic" alt="รูปตอนรหัสผิด">
         </div>
         <h1>รหัสผิดนะอ้วน!</h1>
         <p>จำวันครบรอบเราไม่ได้หรอ<br>อย่างงี้ต้องโดนอะไรน้าาาาา 😜</p>
         <button class="forgive-btn" onclick="closeErrorOverlay()">ขอโทษน้า กดตรงนี้แล้วลองใหม่! 🥺❤️</button>
     </div>
 
+    <!-- Pop-up Notification Banner -->
     <div id="notifBanner" class="notif-banner" onclick="clickNotif()">
         <div class="notif-icon">📩</div>
         <div class="notif-text">
@@ -225,11 +228,12 @@
 
     <div class="container" id="mainContainer">
 
+        <!-- Screen 1: Welcome -->
         <div id="screen-1" class="screen active">
             <h1>🎮 Welcome อ้วน</h1>
             
             <div class="page-photo">
-                <img src="pic1.jpg" onerror="this.src='pic1.JPG'" alt="รูปคู่">
+                <img class="smart-img" src="pic1.heic" alt="รูปคู่">
             </div>
 
             <p>มีภารกิจเล็ก ๆ ให้เล่นก่อนนะ<br>เล่นให้จบ แล้วจะมีอะไรบางอย่างรออยู่</p>
@@ -237,11 +241,12 @@
             <button class="btn" onclick="playPopSound(); nextScreen('screen-2')">[เริ่มเกม ✨]</button>
         </div>
 
+        <!-- Screen 2: Quiz -->
         <div id="screen-2" class="screen">
             <h3>🕹️ ภารกิจพิเศษ</h3>
             
             <div class="page-photo">
-                <img id="quiz-photo" src="pic2.JPG" onerror="this.src='pic2.jpg'" alt="รูปคำถาม">
+                <img id="quiz-photo" class="smart-img" src="q1.heic" alt="รูปคำถาม">
             </div>
 
             <p id="q-title" style="color:#ff70a6; font-weight:bold;">คำถามที่ 1</p>
@@ -249,6 +254,7 @@
             <div class="quiz-options" id="quiz-options"></div>
         </div>
 
+        <!-- Screen 2.5: Mini Game - Passcode Lock -->
         <div id="screen-passcode" class="screen">
             <h2>🔒 ปลดล็อกจดหมายลับ</h2>
             <p style="font-size: 0.88rem; color: #ff477e; margin-bottom: 5px; font-weight: bold;">
@@ -277,11 +283,12 @@
             </div>
         </div>
 
+        <!-- Screen 3: Completed Quiz & Envelope -->
         <div id="screen-3" class="screen">
             <h2>🎉 ปลดล็อกสำเร็จ!</h2>
             
             <div class="page-photo">
-                <img src="pic2.JPG" onerror="this.src='pic2.jpg'" alt="รูปคู่">
+                <img class="smart-img" src="pic1.heic" alt="รูปคู่">
             </div>
 
             <p>เก่งมากอ้วน! พัสดุปลดล็อกแล้ว</p>
@@ -294,17 +301,19 @@
             </div>
         </div>
 
+        <!-- Screen 4: New Notification Details -->
         <div id="screen-4" class="screen">
             <h2>💬 จดหมายและแจ้งเตือน</h2>
             
             <div class="page-photo">
-                <img src="pic3.JPG" onerror="this.src='pic3.jpg'" alt="รูปคู่">
+                <img class="smart-img" src="pic3.heic" alt="รูปคู่">
             </div>
 
             <p style="font-size: 1.15rem; margin: 15px 0; color: #ff477e; font-weight:600;">📦 มีคำสั่งซื้อเข้ามา 1 รายการ</p>
             <button class="btn" onclick="playPopSound(); nextScreen('screen-5')">[กดดูรายละเอียดสินค้า ✨]</button>
         </div>
 
+        <!-- Screen 5: Order Details -->
         <div id="screen-5" class="screen">
             <h2>🛒 รายละเอียดคำสั่งซื้อ</h2>
             <div class="order-card">
@@ -315,6 +324,7 @@
             <button class="btn" onclick="playPopSound(); startTracking()">[ติดตามพัสดุ 🚚]</button>
         </div>
 
+        <!-- Screen 6: Tracking Progress Radar -->
         <div id="screen-6" class="screen">
             <h2>🚚 ติดตามพัสดุ</h2>
             <p>กำลังตรวจสอบตำแหน่ง…</p>
@@ -326,11 +336,12 @@
             <h1 id="p-text" style="font-size: 1.8rem;">0%</h1>
         </div>
 
+        <!-- Screen 7: Delivery Success -->
         <div id="screen-7" class="screen">
             <h2>🎉 จัดส่งสำเร็จแล้ว!</h2>
             
             <div class="page-photo">
-                <img src="pic3.JPG" onerror="this.src='pic3.jpg'" alt="รูปคู่">
+                <img class="smart-img" src="pic3.heic" alt="รูปคู่">
             </div>
 
             <div class="order-card" style="background: #fff0f3; text-align:center;">
@@ -345,11 +356,12 @@
             <button class="btn" onclick="playTadaSound(); fireConfetti(); nextScreen('screen-8')">เปิดของขวัญแล้วกดตรงนี้ต่อ ✨</button>
         </div>
 
+        <!-- Screen 8: Ending & Wishes -->
         <div id="screen-8" class="screen">
             <h2>❤️ ตอนจบ</h2>
             
             <div class="page-photo" style="height: 200px;">
-                <img src="pic4.jpg" onerror="this.src='pic4.JPG'" alt="รูปคู่">
+                <img class="smart-img" src="pic4.heic" alt="รูปคู่">
             </div>
 
             <div class="love-text">
@@ -369,24 +381,73 @@
     </div>
 
 <script>
-    // 🔒 ตั้งค่ารหัสผ่าน: 030825
     const TARGET_PASSCODE = "030825"; 
     let currentInput = "";
 
-    // ระบบสำรองกรณีไม่มีรูป error-pic.jpg ให้เปลี่ยนไปโชว์อิโมจิ ❌
-    document.getElementById('error-photo').onerror = function() {
-        const parent = this.parentElement;
-        parent.style.display = 'none'; // ซ่อนกล่องรูป
-        
-        // สร้างไอคอนกากบาทสีแดงขึ้นมาแทน
-        if(!document.getElementById('fallback-icon')){
-            const icon = document.createElement('div');
-            icon.id = 'fallback-icon';
-            icon.className = 'error-icon';
-            icon.innerText = '❌';
-            parent.parentNode.insertBefore(icon, parent.parentNode.firstChild);
+    // 🔄 ระบบโหลดภาพอัจฉริยะ: ค้นหาไฟล์ .heic / .HEIC / .jpg / .JPG อัตโนมัติ
+    function handleSmartImageLoad(img) {
+        const originalSrc = img.getAttribute('src');
+        if(!originalSrc) return;
+
+        const baseName = originalSrc.substring(0, originalSrc.lastIndexOf('.'));
+        const ext = originalSrc.substring(originalSrc.lastIndexOf('.')).toLowerCase();
+
+        // ขั้นที่ 1: ถ้าเป็น HEIC ให้พยายามแปลงไฟล์โดยใช้ heic2any
+        if (ext === '.heic') {
+            fetch(originalSrc)
+                .then(res => {
+                    if (!res.ok) throw new Error('HEIC file not found');
+                    return res.blob();
+                })
+                .then(blob => heic2any({ blob: blob, toType: "image/jpeg", quality: 0.7 }))
+                .then(conversionResult => {
+                    const url = URL.createObjectURL(Array.isArray(conversionResult) ? conversionResult[0] : conversionResult);
+                    img.src = url;
+                })
+                .catch(() => {
+                    // ถ้า HEIC แปลงไม่สำเร็จ หรือไม่มีไฟล์ ให้ลองดึงไฟล์ .HEIC (ตัวพิมพ์ใหญ่), .jpg, .JPG มาใช้
+                    tryFallbackExtensions(img, baseName);
+                });
+        } else {
+            tryFallbackExtensions(img, baseName);
         }
-    };
+    }
+
+    function tryFallbackExtensions(img, baseName) {
+        const fallbacks = [baseName + '.HEIC', baseName + '.jpg', baseName + '.JPG', baseName + '.png'];
+        let index = 0;
+
+        function loadNext() {
+            if (index < fallbacks.length) {
+                const nextSrc = fallbacks[index++];
+                let tempImg = new Image();
+                tempImg.onload = () => { img.src = nextSrc; };
+                tempImg.onerror = loadNext;
+                tempImg.src = nextSrc;
+            } else {
+                // ถ้าค้นหาทุกนามสกุลแล้วไม่เจอรูปเลย
+                if(img.id === 'error-photo') {
+                    const parent = img.parentElement;
+                    parent.style.display = 'none';
+                    if(!document.getElementById('fallback-icon')){
+                        const icon = document.createElement('div');
+                        icon.id = 'fallback-icon';
+                        icon.className = 'error-icon';
+                        icon.innerText = '❌';
+                        parent.parentNode.insertBefore(icon, parent.parentNode.firstChild);
+                    }
+                }
+            }
+        }
+        loadNext();
+    }
+
+    // เริ่มทำงานระบบโหลดภาพเมื่อหน้าเว็บพร้อม
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('.smart-img').forEach(img => {
+            handleSmartImageLoad(img);
+        });
+    });
 
     // 💖 Heart Cursor Trail Effect
     window.addEventListener('mousemove', function(e) { createHeart(e.clientX, e.clientY); });
@@ -512,21 +573,21 @@
         {
             title: "คำถามที่ 1",
             q: "คนไหนน่ารักที่สุด?",
-            img: "q1.jpg",
+            img: "q1.heic",
             options: ["มะเดิ้นน้อย", "ไอ้อ้วนสุดมู่ตู้พลังหมูสามชั้นสุดขี้เซา"],
             score: 35
         },
         {
             title: "คำถามที่ 2",
             q: "ถ้ามีของขวัญอยู่ตรงหน้า มะเดิ้นน้อยจะเลือกทำอะไร?",
-            img: "q2.jpg",
+            img: "q2.heic",
             options: ["เปิดดู", "เก็บไว้ก่อน", "เควี้ยงทิ้ง"],
             score: 70
         },
         {
             title: "คำถามที่ 3",
             q: "สิ่งที่อยากให้มะเดิ้นน้อยได้มากที่สุดคืออะไร?",
-            img: "q3.jpg",
+            img: "q3.heic",
             options: ["รอยยิ้ม", "ความสุข", "ทั้งสองอย่าง"],
             score: 100
         }
@@ -543,10 +604,8 @@
         document.getElementById('q-text').innerText = data.q;
         
         const imgElement = document.getElementById('quiz-photo');
-        imgElement.src = data.img;
-        imgElement.onerror = function() {
-            this.src = 'pic2.JPG';
-        };
+        imgElement.setAttribute('src', data.img);
+        handleSmartImageLoad(imgElement);
 
         const container = document.getElementById('quiz-options');
         container.innerHTML = '';
@@ -571,7 +630,6 @@
         document.getElementById('passDisplay').innerText = display.split('').join(' ');
     }
 
-    // แก้ไขฟังก์ชันการป้อนคีย์
     window.pressKey = function(num) {
         playPopSound();
         if(num === 'OK') {
